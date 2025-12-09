@@ -7,9 +7,9 @@ info:
     name: API Support
 
 servers:
-  - url: https://api.fpa-tool.com/v1
+  - url: https://sandbox-api.saasquatchleads.com/api
     description: Production Server
-  - url: http://localhost:3000/v1
+  - url: http://localhost:3000/api
     description: Local Development Server
 
 tags:
