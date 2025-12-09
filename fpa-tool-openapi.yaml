@@ -147,6 +147,104 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
 
+    put:
+      tags:
+        - Projects
+      summary: Update Project
+      description: Update project metadata (name, description, etc.)
+      operationId: updateProject
+      parameters:
+        - name: project_id
+          in: path
+          required: true
+          description: Unique project identifier
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateProjectRequest'
+      responses:
+        '200':
+          description: Project updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProjectUpdateResponse'
+        '400':
+          description: Invalid request body or project_id format
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized - missing or invalid auth token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Project not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+    delete:
+      tags:
+        - Projects
+      summary: Delete Project
+      description: Permanently delete a project and all associated dashboards
+      operationId: deleteProject
+      parameters:
+        - name: project_id
+          in: path
+          required: true
+          description: Unique project identifier
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Project deleted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteProjectResponse'
+        '400':
+          description: Invalid project_id format
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized - missing or invalid auth token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Project not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
   /dashboards:
     post:
       tags:
@@ -416,6 +514,16 @@ components:
           description: Reference to uploaded financial data file
           example: 789e0123-e45b-67c8-d901-234567890abc
 
+    UpdateProjectRequest:
+      type: object
+      properties:
+        project_name:
+          type: string
+          description: Updated project name
+          example: Q4 2024 Financial Analysis - Updated
+          minLength: 1
+          maxLength: 255
+
     CreateDashboardRequest:
       type: object
       required:
@@ -609,6 +717,44 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/KPIInfo'
+
+    ProjectUpdateResponse:
+      type: object
+      required:
+        - project_id
+        - project_name
+        - updated_at
+      properties:
+        project_id:
+          type: string
+          format: uuid
+          description: Unique project identifier
+          example: 550e8400-e29b-41d4-a716-446655440000
+        project_name:
+          type: string
+          description: Updated project name
+          example: Q4 2024 Financial Analysis - Updated
+        updated_at:
+          type: string
+          format: date-time
+          description: Timestamp when project was updated
+          example: 2024-12-09T15:45:00Z
+
+    DeleteProjectResponse:
+      type: object
+      required:
+        - project_id
+        - deleted
+      properties:
+        project_id:
+          type: string
+          format: uuid
+          description: Unique project identifier
+          example: 550e8400-e29b-41d4-a716-446655440000
+        deleted:
+          type: boolean
+          description: Confirmation that project was deleted
+          example: true
 
     KPIInfo:
       type: object
