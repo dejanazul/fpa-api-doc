@@ -19,7 +19,7 @@ tags:
     description: Dashboard management endpoints
 
 paths:
-  /projects:
+  /project:
     post:
       tags:
         - Projects
