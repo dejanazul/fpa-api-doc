@@ -58,7 +58,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-
+  /projects:
     get:
       tags:
         - Projects
@@ -101,7 +101,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
 
-  /projects/{project_id}:
+  /project/{project_id}:
     get:
       tags:
         - Projects
@@ -514,6 +514,12 @@ components:
           type: string
           description: Reference to uploaded financial data file
           example: 789e0123-e45b-67c8-d901-234567890abc
+        project_description:
+          type: string
+          description: Description of the project (OPTIONAL)
+          example: Income Statement of Caprae Capital (OPTIONAL)
+          minLength: 1
+          maxLength: 255
 
     UpdateProjectRequest:
       type: object
