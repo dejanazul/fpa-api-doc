@@ -1,0 +1,296 @@
+CreateDashboardRequest:
+  type: object
+  required:
+    - project_id
+    - dashboard_name
+    - template_name
+  properties:
+    project_id:
+      type: string
+      format: uuid
+      description: ID of the project this dashboard belongs to
+      example: 550e8400-e29b-41d4-a716-446655440000
+    dashboard_name:
+      type: string
+      description: Name of the dashboard
+      example: Executive Summary Dashboard
+      minLength: 1
+      maxLength: 255
+    template_name:
+      type: string
+      description: Template to use for dashboard layout
+      example: Executive Template
+      enum:
+        - Executive Template
+        - Financial Analysis Template
+        - Sales Performance Template
+        - Custom Template
+
+UpdateDashboardRequest:
+  type: object
+  properties:
+    dashboard_name:
+      type: string
+      description: Updated dashboard name
+      example: Executive Summary Dashboard - Q4
+      minLength: 1
+      maxLength: 255
+    layout_config:
+      type: object
+      description: Dashboard layout configuration
+      properties:
+        grid_layout:
+          type: string
+          description: Grid layout configuration
+          example: 3x2
+        theme:
+          type: string
+          description: Dashboard theme
+          example: dark
+          enum:
+            - light
+            - dark
+    kpis:
+      type: array
+      description: KPIs to display on the dashboard
+      minItems: 1
+      items:
+        $ref: "#/DashboardKPIUpdate"
+
+DashboardKPIUpdate:
+  type: object
+  required:
+    - kpi_id
+    - display_order
+    - chart_type
+    - color_code
+  properties:
+    kpi_id:
+      type: string
+      description: ID of the KPI to add/update
+      example: kpi-001
+    display_order:
+      type: integer
+      description: Order of display on dashboard
+      example: 1
+      minimum: 1
+    chart_type:
+      type: string
+      description: Type of chart to display
+      example: line
+      enum:
+        - line
+        - bar
+        - pie
+        - area
+        - scatter
+        - gauge
+    color_code:
+      type: string
+      description: Hex color code for the KPI display
+      example: 4CAF50
+      pattern: "^[0-9A-Fa-f]{6}$"
+    show_trend:
+      type: boolean
+      description: Whether to show trend indicators
+      example: true
+      default: false
+
+DashboardResponse:
+  type: object
+  required:
+    - dashboard_id
+    - project_id
+    - dashboard_name
+    - template_name
+    - created_at
+  properties:
+    dashboard_id:
+      type: string
+      description: Unique dashboard identifier
+      example: dash-550e8400-e29b-41d4-a716-446655440001
+    project_id:
+      type: string
+      format: uuid
+      example: 550e8400-e29b-41d4-a716-446655440000
+    dashboard_name:
+      type: string
+      example: Executive Summary Dashboard
+    template_name:
+      type: string
+      example: Executive Template
+    created_at:
+      type: string
+      format: date-time
+      example: 2024-12-09T10:35:00Z
+
+DashboardListResponse:
+  type: object
+  required:
+    - dashboards
+  properties:
+    dashboards:
+      type: array
+      items:
+        $ref: "#/DashboardListItem"
+
+DashboardListItem:
+  type: object
+  required:
+    - dashboard_id
+    - dashboard_name
+    - template_name
+    - kpi_count
+    - created_at
+  properties:
+    dashboard_id:
+      type: string
+      example: dash-550e8400-e29b-41d4-a716-446655440001
+    dashboard_name:
+      type: string
+      example: Executive Summary Dashboard
+    template_name:
+      type: string
+      example: Executive Template
+    kpi_count:
+      type: integer
+      description: Number of KPIs in this dashboard
+      example: 6
+      minimum: 0
+    created_at:
+      type: string
+      format: date-time
+      example: 2024-12-09T10:35:00Z
+
+DashboardDetailResponse:
+  type: object
+  required:
+    - dashboard_id
+    - project_id
+    - dashboard_name
+    - template_name
+    - layout_config
+    - kpis
+  properties:
+    dashboard_id:
+      type: string
+      example: dash-550e8400-e29b-41d4-a716-446655440001
+    project_id:
+      type: string
+      format: uuid
+      example: 550e8400-e29b-41d4-a716-446655440000
+    dashboard_name:
+      type: string
+      example: Executive Summary Dashboard
+    template_name:
+      type: string
+      example: Executive Template
+    layout_config:
+      type: object
+      properties:
+        grid_layout:
+          type: string
+          example: 2x3
+        theme:
+          type: string
+          example: dark
+    kpis:
+      type: array
+      items:
+        $ref: "#/DashboardKPIDetail"
+
+DashboardKPIDetail:
+  type: object
+  required:
+    - dashboard_kpi_id
+    - kpi_id
+    - kpi_name
+    - display_order
+    - chart_type
+    - color_code
+    - show_trend
+    - kpi_data
+  properties:
+    dashboard_kpi_id:
+      type: string
+      description: Unique identifier for this KPI instance in the dashboard
+      example: dkpi-001
+    kpi_id:
+      type: string
+      example: kpi-001
+    kpi_name:
+      type: string
+      example: Revenue Growth Rate
+    display_order:
+      type: integer
+      example: 1
+    chart_type:
+      type: string
+      example: line
+      enum:
+        - line
+        - bar
+        - pie
+        - area
+        - scatter
+        - gauge
+    color_code:
+      type: string
+      example: 4CAF50
+    show_trend:
+      type: boolean
+      example: true
+    kpi_data:
+      type: object
+      properties:
+        calculated_values:
+          type: array
+          items:
+            $ref: "./common-schemas.yaml#/KPIValue"
+
+DashboardUpdateResponse:
+  type: object
+  required:
+    - dashboard_id
+    - dashboard_name
+    - layout_config
+    - kpis
+    - updated_at
+  properties:
+    dashboard_id:
+      type: string
+      example: dash-550e8400-e29b-41d4-a716-446655440001
+    dashboard_name:
+      type: string
+      example: Executive Summary Dashboard - Q4
+    layout_config:
+      type: object
+      properties:
+        grid_layout:
+          type: string
+          example: 3x2
+        theme:
+          type: string
+          example: dark
+    kpis:
+      type: array
+      items:
+        $ref: "#/DashboardKPIDetail"
+    updated_at:
+      type: string
+      format: date-time
+      example: 2024-12-09T14:30:00Z
+
+DeleteDashboardResponse:
+  type: object
+  required:
+    - dashboard_id
+    - deleted
+  properties:
+    dashboard_id:
+      type: string
+      example: dash-550e8400-e29b-41d4-a716-446655440001
+    deleted:
+      type: boolean
+      description: Confirmation that dashboard was deleted
+      example: true

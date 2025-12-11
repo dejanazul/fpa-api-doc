@@ -1,0 +1,118 @@
+openapi: 3.0.0
+info:
+  title: FP&A Tool - Complete API Specification
+  description: API Specification for Phase 2A - Project, Dashboard, and KPI Management
+  version: 1.0.0
+  contact:
+    name: API Support
+
+servers:
+  - url: https://sandbox-api.saasquatchleads.com/api
+    description: Production Server
+  - url: http://localhost:3000/api
+    description: Local Development Server
+
+tags:
+  - name: Projects
+    description: Project management endpoints
+  - name: Dashboards
+    description: Dashboard management endpoints
+  - name: KPIs
+    description: KPI calculation and retrieval endpoints
+
+paths:
+  # Project endpoints
+  /project:
+    $ref: "./paths/projects.yaml#/~1project"
+  /projects:
+    $ref: "./paths/projects.yaml#/~1projects"
+  /project/{project_id}:
+    $ref: "./paths/projects.yaml#/~1project~1{project_id}"
+
+  # Dashboard endpoints
+  /dashboards:
+    $ref: "./paths/dashboards.yaml#/~1dashboards"
+  /dashboards/{dashboard_id}:
+    $ref: "./paths/dashboards.yaml#/~1dashboards~1{dashboard_id}"
+  /projects/{project_id}/dashboards:
+    $ref: "./paths/dashboards.yaml#/~1projects~1{project_id}~1dashboards"
+
+  # KPI endpoints
+  /fin/kpi/{upload_id}:
+    $ref: "./paths/kpis.yaml#/~1fin~1kpi~1{upload_id}"
+
+components:
+  schemas:
+    # Project schemas
+    CreateProjectRequest:
+      $ref: "./schemas/project-schemas.yaml#/CreateProjectRequest"
+    UpdateProjectRequest:
+      $ref: "./schemas/project-schemas.yaml#/UpdateProjectRequest"
+    ProjectResponse:
+      $ref: "./schemas/project-schemas.yaml#/ProjectResponse"
+    ProjectListResponse:
+      $ref: "./schemas/project-schemas.yaml#/ProjectListResponse"
+    ProjectListItem:
+      $ref: "./schemas/project-schemas.yaml#/ProjectListItem"
+    ProjectDetailResponse:
+      $ref: "./schemas/project-schemas.yaml#/ProjectDetailResponse"
+    ProjectUpdateResponse:
+      $ref: "./schemas/project-schemas.yaml#/ProjectUpdateResponse"
+    DeleteProjectResponse:
+      $ref: "./schemas/project-schemas.yaml#/DeleteProjectResponse"
+
+    # Dashboard schemas
+    CreateDashboardRequest:
+      $ref: "./schemas/dashboard-schemas.yaml#/CreateDashboardRequest"
+    UpdateDashboardRequest:
+      $ref: "./schemas/dashboard-schemas.yaml#/UpdateDashboardRequest"
+    DashboardKPIUpdate:
+      $ref: "./schemas/dashboard-schemas.yaml#/DashboardKPIUpdate"
+    DashboardResponse:
+      $ref: "./schemas/dashboard-schemas.yaml#/DashboardResponse"
+    DashboardListResponse:
+      $ref: "./schemas/dashboard-schemas.yaml#/DashboardListResponse"
+    DashboardListItem:
+      $ref: "./schemas/dashboard-schemas.yaml#/DashboardListItem"
+    DashboardDetailResponse:
+      $ref: "./schemas/dashboard-schemas.yaml#/DashboardDetailResponse"
+    DashboardKPIDetail:
+      $ref: "./schemas/dashboard-schemas.yaml#/DashboardKPIDetail"
+    DashboardUpdateResponse:
+      $ref: "./schemas/dashboard-schemas.yaml#/DashboardUpdateResponse"
+    DeleteDashboardResponse:
+      $ref: "./schemas/dashboard-schemas.yaml#/DeleteDashboardResponse"
+
+    # KPI schemas
+    CalculateKPIRequest:
+      $ref: "./schemas/kpi-schemas.yaml#/CalculateKPIRequest"
+    UploadSummary:
+      $ref: "./schemas/kpi-schemas.yaml#/UploadSummary"
+    FailedFileInfo:
+      $ref: "./schemas/kpi-schemas.yaml#/FailedFileInfo"
+    CalculatedKPI:
+      $ref: "./schemas/kpi-schemas.yaml#/CalculatedKPI"
+    KPICalculationResponse:
+      $ref: "./schemas/kpi-schemas.yaml#/KPICalculationResponse"
+    KPIPartialResponse:
+      $ref: "./schemas/kpi-schemas.yaml#/KPIPartialResponse"
+    KPIRetrievalResponse:
+      $ref: "./schemas/kpi-schemas.yaml#/KPIRetrievalResponse"
+
+    # Common schemas
+    ErrorResponse:
+      $ref: "./schemas/common-schemas.yaml#/ErrorResponse"
+    KPIInfo:
+      $ref: "./schemas/common-schemas.yaml#/KPIInfo"
+    KPIValue:
+      $ref: "./schemas/common-schemas.yaml#/KPIValue"
+
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Bearer token authentication using JWT
+
+security:
+  - BearerAuth: []

@@ -1,0 +1,217 @@
+CalculateKPIRequest:
+  type: object
+  required:
+    - upload_id
+  properties:
+    upload_id:
+      type: string
+      format: uuid
+      description: Reference to uploaded financial data file
+      example: c2383c43-9c58-4034-a878-ae7db9a09f0d
+
+UploadSummary:
+  type: object
+  required:
+    - overall_status
+    - total_files
+    - processed_files
+    - failed_files
+  properties:
+    overall_status:
+      type: string
+      description: Overall status of the upload processing
+      enum:
+        - success
+        - partial
+        - failed
+      example: success
+    total_files:
+      type: integer
+      description: Total number of files in the upload
+      example: 1
+      minimum: 0
+    processed_files:
+      type: integer
+      description: Number of successfully processed files
+      example: 1
+      minimum: 0
+    failed_files:
+      type: integer
+      description: Number of failed files
+      example: 0
+      minimum: 0
+    timestamp:
+      type: string
+      format: date-time
+      description: Timestamp of processing
+      example: "2025-12-09T14:57:17.938993"
+
+FailedFileInfo:
+  type: object
+  required:
+    - filename
+    - error
+  properties:
+    filename:
+      type: string
+      description: Name of the failed file
+      example: invalid_format.xlsx
+    error:
+      type: string
+      description: Error message explaining the failure
+      example: Invalid spreadsheet format
+
+CalculatedKPI:
+  type: object
+  required:
+    - kpi_id
+    - kpi_name
+    - kpi_category
+    - kpi_value
+    - calculation_status
+    - error_message
+    - dependencies_satisfied
+    - calculation_duration_ms
+    - calculation_order
+    - last_calculation_date
+    - created_at
+    - updated_at
+  properties:
+    kpi_id:
+      type: string
+      format: uuid
+      description: Unique KPI identifier
+      example: f951c880-91dd-486a-884e-4e16a064f65b
+    kpi_name:
+      type: string
+      description: Human-readable name of the KPI
+      example: Net Income
+      minLength: 1
+      maxLength: 255
+    kpi_category:
+      type: string
+      description: Category classification of the KPI
+      enum:
+        - Dependency Metric
+        - Profitability
+        - Liquidity
+        - Solvency
+        - Growth Metrics
+        - Efficiency Metrics
+      example: Profitability
+    kpi_value:
+      type: number
+      description: Calculated value of the KPI (can be integer or decimal)
+      example: 790000.0
+    calculation_status:
+      type: string
+      description: Status of KPI calculation
+      enum:
+        - calculated
+        - pending
+        - failed
+      example: calculated
+    error_message:
+      type: string
+      nullable: true
+      description: Error message if calculation failed (null if successful)
+      example: null
+    dependencies_satisfied:
+      type: boolean
+      description: Whether all required dependencies for this KPI are satisfied
+      example: true
+    calculation_duration_ms:
+      type: integer
+      description: Time taken to calculate this KPI in milliseconds
+      example: 64
+      minimum: 0
+    calculation_order:
+      type: integer
+      description: Order in which KPI was calculated (for dependency resolution)
+      example: 0
+      minimum: 0
+    last_calculation_date:
+      type: string
+      format: date-time
+      description: Timestamp of last calculation
+      example: "2025-12-09T14:57:17.938993"
+    created_at:
+      type: string
+      format: date-time
+      description: Timestamp when KPI record was created
+      example: "2025-12-09T14:57:18.004140"
+    updated_at:
+      type: string
+      format: date-time
+      description: Timestamp of last update
+      example: "2025-12-09T14:57:18.004143"
+
+KPICalculationResponse:
+  type: object
+  required:
+    - message
+    - upload_id
+    - total_kpis
+    - calculated_kpis
+  properties:
+    message:
+      type: string
+      description: Status message
+      example: Successfully retrieved KPIs
+    upload_id:
+      type: string
+      format: uuid
+      description: Reference to the uploaded file
+      example: c2383c43-9c58-4034-a878-ae7db9a09f0d
+    total_kpis:
+      type: integer
+      description: Total number of KPIs calculated
+      example: 17
+      minimum: 0
+    calculated_kpis:
+      type: array
+      description: Array of calculated KPI objects
+      items:
+        $ref: "#/CalculatedKPI"
+
+KPIPartialResponse:
+  type: object
+  required:
+    - upload_summary
+    - failed_files
+  properties:
+    upload_summary:
+      $ref: "#/UploadSummary"
+    failed_files:
+      type: array
+      description: Information about files that failed processing
+      items:
+        $ref: "#/FailedFileInfo"
+
+KPIRetrievalResponse:
+  type: object
+  required:
+    - message
+    - upload_id
+    - total_kpis
+    - calculated_kpis
+  properties:
+    message:
+      type: string
+      description: Status message
+      example: Successfully retrieved KPIs
+    upload_id:
+      type: string
+      format: uuid
+      description: Upload identifier
+      example: c2383c43-9c58-4034-a878-ae7db9a09f0d
+    total_kpis:
+      type: integer
+      description: Total number of KPIs retrieved
+      example: 17
+      minimum: 0
+    calculated_kpis:
+      type: array
+      description: Array of calculated KPI objects with full metadata
+      items:
+        $ref: "#/CalculatedKPI"

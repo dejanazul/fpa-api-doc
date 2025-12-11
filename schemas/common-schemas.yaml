@@ -1,0 +1,58 @@
+ErrorResponse:
+  type: object
+  required:
+    - error
+    - message
+  properties:
+    error:
+      type: string
+      description: Error code identifier
+      example: NOT_FOUND
+    message:
+      type: string
+      description: Human-readable error message
+      example: Project not found
+    details:
+      type: object
+      description: Additional error details
+      additionalProperties: true
+
+KPIInfo:
+  type: object
+  required:
+    - kpi_id
+    - kpi_name
+    - category
+  properties:
+    kpi_id:
+      type: string
+      description: Unique KPI identifier
+      example: kpi-001
+    kpi_name:
+      type: string
+      description: Display name of the KPI
+      example: Revenue Growth Rate
+    category:
+      type: string
+      description: Category classification of the KPI
+      example: Growth Metrics
+
+KPIValue:
+  type: object
+  required:
+    - period
+    - value
+    - unit
+  properties:
+    period:
+      type: string
+      description: Time period for the value
+      example: 2024-Q1
+    value:
+      type: number
+      description: Calculated KPI value
+      example: 12.5
+    unit:
+      type: string
+      description: Unit of measurement
+      example: "%"

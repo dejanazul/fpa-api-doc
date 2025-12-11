@@ -1,0 +1,46 @@
+/fin/kpi/{upload_id}:
+  get:
+    tags:
+      - KPIs
+    summary: Retrieve Calculated KPIs
+    description: Fetch previously calculated KPI data for a specific upload. Returns all calculated KPIs with their values, categories, and metadata.
+    operationId: getCalculatedKPIs
+    parameters:
+      - name: upload_id
+        in: path
+        required: true
+        description: Unique upload identifier (UUID)
+        schema:
+          type: string
+          format: uuid
+    responses:
+      "200":
+        description: KPI data successfully retrieved
+        content:
+          application/json:
+            schema:
+              $ref: "../schemas/kpi-schemas.yaml#/KPIRetrievalResponse"
+      "400":
+        description: Invalid upload_id format
+        content:
+          application/json:
+            schema:
+              $ref: "../schemas/common-schemas.yaml#/ErrorResponse"
+      "401":
+        description: Unauthorized - missing or invalid auth token
+        content:
+          application/json:
+            schema:
+              $ref: "../schemas/common-schemas.yaml#/ErrorResponse"
+      "404":
+        description: Upload ID not found in database
+        content:
+          application/json:
+            schema:
+              $ref: "../schemas/common-schemas.yaml#/ErrorResponse"
+      "500":
+        description: Internal server error during KPI retrieval
+        content:
+          application/json:
+            schema:
+              $ref: "../schemas/common-schemas.yaml#/ErrorResponse"

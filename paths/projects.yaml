@@ -1,0 +1,226 @@
+/project:
+  post:
+    tags:
+      - Projects
+    summary: Create Project
+    description: Create a new project with initial upload data
+    operationId: createProject
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/project-schemas.yaml#/CreateProjectRequest"
+    responses:
+      "201":
+        description: Project created successfully
+        content:
+          application/json:
+            schema:
+              $ref: "../schemas/project-schemas.yaml#/ProjectResponse"
+      "400":
+        description: Invalid request body
+        content:
+          application/json:
+            schema:
+              $ref: "../schemas/common-schemas.yaml#/ErrorResponse"
+      "401":
+        description: Unauthorized - missing or invalid auth token
+        content:
+          application/json:
+            schema:
+              $ref: "../schemas/common-schemas.yaml#/ErrorResponse"
+      "500":
+        description: Internal server error
+        content:
+          application/json:
+            schema:
+              $ref: "../schemas/common-schemas.yaml#/ErrorResponse"
+
+/projects:
+  get:
+    tags:
+      - Projects
+    summary: List User Projects
+    description: Get all projects belonging to the authenticated user
+    operationId: listUserProjects
+    parameters:
+      - name: limit
+        in: query
+        description: Maximum number of projects to return
+        schema:
+          type: integer
+          default: 50
+          minimum: 1
+          maximum: 100
+      - name: offset
+        in: query
+        description: Number of projects to skip for pagination
+        schema:
+          type: integer
+          default: 0
+          minimum: 0
+    responses:
+      "200":
+        description: List of user projects
+        content:
+          application/json:
+            schema:
+              $ref: "../schemas/project-schemas.yaml#/ProjectListResponse"
+      "401":
+        description: Unauthorized - missing or invalid auth token
+        content:
+          application/json:
+            schema:
+              $ref: "../schemas/common-schemas.yaml#/ErrorResponse"
+      "500":
+        description: Internal server error
+        content:
+          application/json:
+            schema:
+              $ref: "../schemas/common-schemas.yaml#/ErrorResponse"
+
+/project/{project_id}:
+  get:
+    tags:
+      - Projects
+    summary: Get Project with Available KPIs
+    description: Retrieve a specific project with all available KPIs
+    operationId: getProject
+    parameters:
+      - name: project_id
+        in: path
+        required: true
+        description: Unique project identifier
+        schema:
+          type: string
+          format: uuid
+    responses:
+      "200":
+        description: Project details with available KPIs
+        content:
+          application/json:
+            schema:
+              $ref: "../schemas/project-schemas.yaml#/ProjectDetailResponse"
+      "400":
+        description: Invalid project_id format
+        content:
+          application/json:
+            schema:
+              $ref: "../schemas/common-schemas.yaml#/ErrorResponse"
+      "401":
+        description: Unauthorized - missing or invalid auth token
+        content:
+          application/json:
+            schema:
+              $ref: "../schemas/common-schemas.yaml#/ErrorResponse"
+      "404":
+        description: Project not found
+        content:
+          application/json:
+            schema:
+              $ref: "../schemas/common-schemas.yaml#/ErrorResponse"
+      "500":
+        description: Internal server error
+        content:
+          application/json:
+            schema:
+              $ref: "../schemas/common-schemas.yaml#/ErrorResponse"
+
+  put:
+    tags:
+      - Projects
+    summary: Update Project
+    description: Update project metadata (name, description, etc.)
+    operationId: updateProject
+    parameters:
+      - name: project_id
+        in: path
+        required: true
+        description: Unique project identifier
+        schema:
+          type: string
+          format: uuid
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/project-schemas.yaml#/UpdateProjectRequest"
+    responses:
+      "200":
+        description: Project updated successfully
+        content:
+          application/json:
+            schema:
+              $ref: "../schemas/project-schemas.yaml#/ProjectUpdateResponse"
+      "400":
+        description: Invalid request body or project_id format
+        content:
+          application/json:
+            schema:
+              $ref: "../schemas/common-schemas.yaml#/ErrorResponse"
+      "401":
+        description: Unauthorized - missing or invalid auth token
+        content:
+          application/json:
+            schema:
+              $ref: "../schemas/common-schemas.yaml#/ErrorResponse"
+      "404":
+        description: Project not found
+        content:
+          application/json:
+            schema:
+              $ref: "../schemas/common-schemas.yaml#/ErrorResponse"
+      "500":
+        description: Internal server error
+        content:
+          application/json:
+            schema:
+              $ref: "../schemas/common-schemas.yaml#/ErrorResponse"
+
+  delete:
+    tags:
+      - Projects
+    summary: Delete Project
+    description: Permanently delete a project and all associated dashboards
+    operationId: deleteProject
+    parameters:
+      - name: project_id
+        in: path
+        required: true
+        description: Unique project identifier
+        schema:
+          type: string
+          format: uuid
+    responses:
+      "200":
+        description: Project deleted successfully
+        content:
+          application/json:
+            schema:
+              $ref: "../schemas/project-schemas.yaml#/DeleteProjectResponse"
+      "400":
+        description: Invalid project_id format
+        content:
+          application/json:
+            schema:
+              $ref: "../schemas/common-schemas.yaml#/ErrorResponse"
+      "401":
+        description: Unauthorized - missing or invalid auth token
+        content:
+          application/json:
+            schema:
+              $ref: "../schemas/common-schemas.yaml#/ErrorResponse"
+      "404":
+        description: Project not found
+        content:
+          application/json:
+            schema:
+              $ref: "../schemas/common-schemas.yaml#/ErrorResponse"
+      "500":
+        description: Internal server error
+        content:
+          application/json:
+            schema:
+              $ref: "../schemas/common-schemas.yaml#/ErrorResponse"

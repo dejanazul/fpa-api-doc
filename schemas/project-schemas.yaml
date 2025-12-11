@@ -1,0 +1,165 @@
+CreateProjectRequest:
+  type: object
+  required:
+    - project_name
+    - upload_id
+  properties:
+    project_name:
+      type: string
+      description: Name of the project
+      example: Q4 2024 Financial Analysis
+      minLength: 1
+      maxLength: 255
+    upload_id:
+      type: string
+      description: Reference to uploaded financial data file
+      example: 789e0123-e45b-67c8-d901-234567890abc
+    project_description:
+      type: string
+      description: Description of the project (OPTIONAL)
+      example: Income Statement of Caprae Capital (OPTIONAL)
+      minLength: 1
+      maxLength: 255
+
+UpdateProjectRequest:
+  type: object
+  properties:
+    project_name:
+      type: string
+      description: Updated project name
+      example: Q4 2024 Financial Analysis - Updated
+      minLength: 1
+      maxLength: 255
+
+ProjectResponse:
+  type: object
+  required:
+    - project_id
+    - user_id
+    - upload_id
+    - project_name
+    - created_at
+  properties:
+    project_id:
+      type: string
+      format: uuid
+      description: Unique project identifier
+      example: 550e8400-e29b-41d4-a716-446655440000
+    user_id:
+      type: string
+      format: uuid
+      description: ID of the project owner
+      example: 123e4567-e89b-12d3-a456-426614174000
+    upload_id:
+      type: string
+      description: Reference to the uploaded data file
+      example: 789e0123-e45b-67c8-d901-234567890abc
+    project_name:
+      type: string
+      description: Name of the project
+      example: Q4 2024 Financial Analysis
+    created_at:
+      type: string
+      format: date-time
+      description: Timestamp when project was created
+      example: 2024-12-09T10:30:00Z
+
+ProjectListResponse:
+  type: object
+  required:
+    - projects
+  properties:
+    projects:
+      type: array
+      items:
+        $ref: "#/ProjectListItem"
+
+ProjectListItem:
+  type: object
+  required:
+    - project_id
+    - project_name
+    - upload_id
+    - dashboard_count
+    - created_at
+  properties:
+    project_id:
+      type: string
+      format: uuid
+      example: 550e8400-e29b-41d4-a716-446655440000
+    project_name:
+      type: string
+      example: Q4 2024 Financial Analysis
+    upload_id:
+      type: string
+      example: 789e0123-e45b-67c8-d901-234567890abc
+    dashboard_count:
+      type: integer
+      description: Number of dashboards in this project
+      example: 3
+      minimum: 0
+    created_at:
+      type: string
+      format: date-time
+      example: 2024-12-09T10:30:00Z
+
+ProjectDetailResponse:
+  type: object
+  required:
+    - project_id
+    - project_name
+    - upload_id
+    - available_kpis
+  properties:
+    project_id:
+      type: string
+      format: uuid
+      example: 550e8400-e29b-41d4-a716-446655440000
+    project_name:
+      type: string
+      example: Q4 2024 Financial Analysis
+    upload_id:
+      type: string
+      example: 789e0123-e45b-67c8-d901-234567890abc
+    available_kpis:
+      type: array
+      items:
+        $ref: "./common-schemas.yaml#/KPIInfo"
+
+ProjectUpdateResponse:
+  type: object
+  required:
+    - project_id
+    - project_name
+    - updated_at
+  properties:
+    project_id:
+      type: string
+      format: uuid
+      description: Unique project identifier
+      example: 550e8400-e29b-41d4-a716-446655440000
+    project_name:
+      type: string
+      description: Updated project name
+      example: Q4 2024 Financial Analysis - Updated
+    updated_at:
+      type: string
+      format: date-time
+      description: Timestamp when project was updated
+      example: 2024-12-09T15:45:00Z
+
+DeleteProjectResponse:
+  type: object
+  required:
+    - project_id
+    - deleted
+  properties:
+    project_id:
+      type: string
+      format: uuid
+      description: Unique project identifier
+      example: 550e8400-e29b-41d4-a716-446655440000
+    deleted:
+      type: boolean
+      description: Confirmation that project was deleted
+      example: true

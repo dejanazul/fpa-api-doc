@@ -1,0 +1,248 @@
+/dashboards:
+  post:
+    tags:
+      - Dashboards
+    summary: Create Dashboard
+    description: Create a new dashboard in a project using a template
+    operationId: createDashboard
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/dashboard-schemas.yaml#/CreateDashboardRequest"
+    responses:
+      "201":
+        description: Dashboard created successfully
+        content:
+          application/json:
+            schema:
+              $ref: "../schemas/dashboard-schemas.yaml#/DashboardResponse"
+      "400":
+        description: Invalid request body
+        content:
+          application/json:
+            schema:
+              $ref: "../schemas/common-schemas.yaml#/ErrorResponse"
+      "401":
+        description: Unauthorized - missing or invalid auth token
+        content:
+          application/json:
+            schema:
+              $ref: "../schemas/common-schemas.yaml#/ErrorResponse"
+      "404":
+        description: Project not found
+        content:
+          application/json:
+            schema:
+              $ref: "../schemas/common-schemas.yaml#/ErrorResponse"
+      "500":
+        description: Internal server error
+        content:
+          application/json:
+            schema:
+              $ref: "../schemas/common-schemas.yaml#/ErrorResponse"
+
+/dashboards/{dashboard_id}:
+  get:
+    tags:
+      - Dashboards
+    summary: Get Dashboard with All Data
+    description: Retrieve complete dashboard configuration including all KPIs and their data
+    operationId: getDashboard
+    parameters:
+      - name: dashboard_id
+        in: path
+        required: true
+        description: Unique dashboard identifier
+        schema:
+          type: string
+    responses:
+      "200":
+        description: Complete dashboard data
+        content:
+          application/json:
+            schema:
+              $ref: "../schemas/dashboard-schemas.yaml#/DashboardDetailResponse"
+      "400":
+        description: Invalid dashboard_id format
+        content:
+          application/json:
+            schema:
+              $ref: "../schemas/common-schemas.yaml#/ErrorResponse"
+      "401":
+        description: Unauthorized - missing or invalid auth token
+        content:
+          application/json:
+            schema:
+              $ref: "../schemas/common-schemas.yaml#/ErrorResponse"
+      "404":
+        description: Dashboard not found
+        content:
+          application/json:
+            schema:
+              $ref: "../schemas/common-schemas.yaml#/ErrorResponse"
+      "500":
+        description: Internal server error
+        content:
+          application/json:
+            schema:
+              $ref: "../schemas/common-schemas.yaml#/ErrorResponse"
+
+  put:
+    tags:
+      - Dashboards
+    summary: Update Dashboard
+    description: Update dashboard metadata, layout, and KPI configuration. Handles all updates in a single call.
+    operationId: updateDashboard
+    parameters:
+      - name: dashboard_id
+        in: path
+        required: true
+        description: Unique dashboard identifier
+        schema:
+          type: string
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/dashboard-schemas.yaml#/UpdateDashboardRequest"
+    responses:
+      "200":
+        description: Dashboard updated successfully
+        content:
+          application/json:
+            schema:
+              $ref: "../schemas/dashboard-schemas.yaml#/DashboardUpdateResponse"
+      "400":
+        description: Invalid request body or dashboard_id format
+        content:
+          application/json:
+            schema:
+              $ref: "../schemas/common-schemas.yaml#/ErrorResponse"
+      "401":
+        description: Unauthorized - missing or invalid auth token
+        content:
+          application/json:
+            schema:
+              $ref: "../schemas/common-schemas.yaml#/ErrorResponse"
+      "404":
+        description: Dashboard not found
+        content:
+          application/json:
+            schema:
+              $ref: "../schemas/common-schemas.yaml#/ErrorResponse"
+      "500":
+        description: Internal server error
+        content:
+          application/json:
+            schema:
+              $ref: "../schemas/common-schemas.yaml#/ErrorResponse"
+
+  delete:
+    tags:
+      - Dashboards
+    summary: Delete Dashboard
+    description: Permanently delete a dashboard
+    operationId: deleteDashboard
+    parameters:
+      - name: dashboard_id
+        in: path
+        required: true
+        description: Unique dashboard identifier
+        schema:
+          type: string
+    responses:
+      "200":
+        description: Dashboard deleted successfully
+        content:
+          application/json:
+            schema:
+              $ref: "../schemas/dashboard-schemas.yaml#/DeleteDashboardResponse"
+      "400":
+        description: Invalid dashboard_id format
+        content:
+          application/json:
+            schema:
+              $ref: "../schemas/common-schemas.yaml#/ErrorResponse"
+      "401":
+        description: Unauthorized - missing or invalid auth token
+        content:
+          application/json:
+            schema:
+              $ref: "../schemas/common-schemas.yaml#/ErrorResponse"
+      "404":
+        description: Dashboard not found
+        content:
+          application/json:
+            schema:
+              $ref: "../schemas/common-schemas.yaml#/ErrorResponse"
+      "500":
+        description: Internal server error
+        content:
+          application/json:
+            schema:
+              $ref: "../schemas/common-schemas.yaml#/ErrorResponse"
+
+/projects/{project_id}/dashboards:
+  get:
+    tags:
+      - Dashboards
+    summary: List Dashboards by Project
+    description: Get all dashboards belonging to a specific project
+    operationId: listProjectDashboards
+    parameters:
+      - name: project_id
+        in: path
+        required: true
+        description: Unique project identifier
+        schema:
+          type: string
+          format: uuid
+      - name: limit
+        in: query
+        description: Maximum number of dashboards to return
+        schema:
+          type: integer
+          default: 50
+          minimum: 1
+          maximum: 100
+      - name: offset
+        in: query
+        description: Number of dashboards to skip for pagination
+        schema:
+          type: integer
+          default: 0
+          minimum: 0
+    responses:
+      "200":
+        description: List of dashboards in the project
+        content:
+          application/json:
+            schema:
+              $ref: "../schemas/dashboard-schemas.yaml#/DashboardListResponse"
+      "400":
+        description: Invalid project_id format
+        content:
+          application/json:
+            schema:
+              $ref: "../schemas/common-schemas.yaml#/ErrorResponse"
+      "401":
+        description: Unauthorized - missing or invalid auth token
+        content:
+          application/json:
+            schema:
+              $ref: "../schemas/common-schemas.yaml#/ErrorResponse"
+      "404":
+        description: Project not found
+        content:
+          application/json:
+            schema:
+              $ref: "../schemas/common-schemas.yaml#/ErrorResponse"
+      "500":
+        description: Internal server error
+        content:
+          application/json:
+            schema:
+              $ref: "../schemas/common-schemas.yaml#/ErrorResponse"
