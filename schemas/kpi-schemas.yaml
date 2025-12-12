@@ -146,6 +146,110 @@ CalculatedKPI:
       description: Timestamp of last update
       example: "2025-12-09T14:57:18.004143"
 
+HistoricalKPI:
+  type: object
+  required:
+    - id
+    - upload_id
+    - file_id
+    - kpi_name
+    - kpi_category
+    - period_start_date
+    - period_end_date
+    - period_type
+    - period_label
+    - kpi_value
+    - calculation_status
+    - error_message
+    - created_at
+    - updated_at
+  properties:
+    id:
+      type: string
+      format: uuid
+      description: Unique identifier for this historical KPI record
+      example: 7631de9b-c2b0-4d82-87c3-f65dd37f575f
+    upload_id:
+      type: string
+      format: uuid
+      description: Reference to the upload batch
+      example: 21c2e0e0-11bb-4810-a8a8-8a40aac71045
+    file_id:
+      type: string
+      format: uuid
+      description: Reference to the specific file within the upload
+      example: 180df6c1-a073-42ab-8d92-397b5e71727a
+    kpi_name:
+      type: string
+      description: Human-readable name of the KPI
+      example: Net Income
+      minLength: 1
+      maxLength: 255
+    kpi_category:
+      type: string
+      description: Category classification of the KPI
+      enum:
+        - Dependency Metric
+        - Profitability
+        - Liquidity
+        - Solvency
+        - Growth Metrics
+        - Efficiency Metrics
+      example: Dependency Metric
+    period_start_date:
+      type: string
+      format: date
+      description: Start date of the period for this KPI value
+      example: "2021-01-01"
+    period_end_date:
+      type: string
+      format: date
+      description: End date of the period for this KPI value
+      example: "2021-12-31"
+    period_type:
+      type: string
+      description: Type of the time period
+      enum:
+        - yearly
+        - quarterly
+        - monthly
+        - weekly
+        - daily
+      example: yearly
+    period_label:
+      type: string
+      description: Human-readable label for the period
+      example: "2021"
+      minLength: 1
+      maxLength: 50
+    kpi_value:
+      type: number
+      description: Historical value of the KPI for this period
+      example: 150000.0
+    calculation_status:
+      type: string
+      description: Status of KPI calculation
+      enum:
+        - calculated
+        - pending
+        - failed
+      example: calculated
+    error_message:
+      type: string
+      nullable: true
+      description: Error message if calculation failed (null if successful)
+      example: null
+    created_at:
+      type: string
+      format: date-time
+      description: Timestamp when this historical record was created
+      example: "2025-12-11T16:54:47.810129"
+    updated_at:
+      type: string
+      format: date-time
+      description: Timestamp of last update to this record
+      example: "2025-12-11T16:54:47.810130"
+  
 KPICalculationResponse:
   type: object
   required:
@@ -173,6 +277,11 @@ KPICalculationResponse:
       description: Array of calculated KPI objects
       items:
         $ref: "#/CalculatedKPI"
+    historical_kpis:
+      type: array
+      description: Array of historical KPI values for trend analysis
+      items:
+        $ref: "#/HistoricalKPI"
 
 KPIPartialResponse:
   type: object
@@ -195,6 +304,7 @@ KPIRetrievalResponse:
     - upload_id
     - total_kpis
     - calculated_kpis
+    - historical_kpis
   properties:
     message:
       type: string
@@ -215,3 +325,9 @@ KPIRetrievalResponse:
       description: Array of calculated KPI objects with full metadata
       items:
         $ref: "#/CalculatedKPI"
+    historical_kpis:
+      type: array
+      description: Array of historical KPI values for trend analysis
+      items:
+        $ref: "#/HistoricalKPI"
+
