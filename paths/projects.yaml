@@ -1,4 +1,4 @@
-/project:
+/fin/project:
   post:
     tags:
       - Projects
@@ -11,6 +11,16 @@
         application/json:
           schema:
             $ref: "../schemas/project-schemas.yaml#/CreateProjectRequest"
+          examples:
+            valid:
+              summary: Valid request
+              value:
+                project_name: "First Project"
+                project_description: "OUR first project (OPTIONAL)"
+            minimal:
+              summary: Minimal request (without description)
+              value:
+                project_name: "First Project"
     responses:
       "201":
         description: Project created successfully
@@ -18,181 +28,269 @@
           application/json:
             schema:
               $ref: "../schemas/project-schemas.yaml#/ProjectResponse"
+            example:
+              message: "Successfully created finance project"
+              project_id: "339cf69c-f60a-4c6c-8789-70e2664fd0a0"
+              project_name: "First Project"
+              project_description: "OUR first project"
+              created_at: "2025-12-12T07:59:20.560051"
+              updated_at: "2025-12-12T07:59:20.560058"
       "400":
-        description: Invalid request body
+        description: Bad request - validation errors
         content:
           application/json:
             schema:
               $ref: "../schemas/common-schemas.yaml#/ErrorResponse"
-      "401":
-        description: Unauthorized - missing or invalid auth token
+            examples:
+              missing_json:
+                summary: Missing JSON body
+                value:
+                  error: "Missing JSON body"
+              missing_project_name:
+                summary: Missing project_name field
+                value:
+                  error: "Missing project name"
+              invalid_project_name_type:
+                summary: Invalid project_name type (not string)
+                value:
+                  error: "Invalid project_name format"
+              project_name_too_short:
+                summary: Project name less than 3 characters
+                value:
+                  error: "Project name must be more than 3 characters"
+              project_name_too_long:
+                summary: Project name exceeds 100 characters
+                value:
+                  error: "Project name must be less than or equal to 100 characters"
+              invalid_description_type:
+                summary: Invalid project_description type (not string)
+                value:
+                  error: "Invalid project_description format"
+      "404":
+        description: User not found or not authenticated
         content:
           application/json:
             schema:
               $ref: "../schemas/common-schemas.yaml#/ErrorResponse"
+            example:
+              error: "User not authenticated"
       "500":
         description: Internal server error
         content:
           application/json:
             schema:
               $ref: "../schemas/common-schemas.yaml#/ErrorResponse"
+            example:
+              error: "Internal Server Error"
 
-/projects:
+/fin/projects:
   get:
     tags:
       - Projects
-    summary: List User Projects
+    summary: Get All User Projects
     description: Get all projects belonging to the authenticated user
     operationId: listUserProjects
-    parameters:
-      - name: limit
-        in: query
-        description: Maximum number of projects to return
-        schema:
-          type: integer
-          default: 50
-          minimum: 1
-          maximum: 100
-      - name: offset
-        in: query
-        description: Number of projects to skip for pagination
-        schema:
-          type: integer
-          default: 0
-          minimum: 0
     responses:
       "200":
-        description: List of user projects
+        description: List of user projects retrieved successfully
         content:
           application/json:
             schema:
               $ref: "../schemas/project-schemas.yaml#/ProjectListResponse"
-      "401":
-        description: Unauthorized - missing or invalid auth token
-        content:
-          application/json:
-            schema:
-              $ref: "../schemas/common-schemas.yaml#/ErrorResponse"
+            example:
+              message: "Successfully fetched all finance projects"
+              total_projects: 2
+              projects:
+                - project_id: "339cf69c-f60a-4c6c-8789-70e2664fd0a0"
+                  project_name: "First Project"
+                  project_description: "OUR first project"
+                  created_at: "2025-12-12T07:59:20.560051"
+                  updated_at: "2025-12-12T07:59:20.560058"
+                - project_id: "440dg70d-g71b-5d7d-b890-81f3775ge1b1"
+                  project_name: "Second Project"
+                  project_description: "Another project"
+                  created_at: "2025-12-12T08:30:15.123456"
+                  updated_at: "2025-12-12T08:30:15.123456"
       "500":
         description: Internal server error
         content:
           application/json:
             schema:
               $ref: "../schemas/common-schemas.yaml#/ErrorResponse"
+            example:
+              error: "Internal Server Error"
 
-/project/{project_id}:
+/fin/project/{project_id}:
   get:
     tags:
       - Projects
-    summary: Get Project with Available KPIs
-    description: Retrieve a specific project with all available KPIs
+    summary: Get Project by Project ID
+    description: Retrieve a specific project by its unique identifier
     operationId: getProject
     parameters:
       - name: project_id
         in: path
         required: true
-        description: Unique project identifier
+        description: Unique project identifier (UUID format)
         schema:
           type: string
           format: uuid
+        example: "339cf69c-f60a-4c6c-8789-70e2664fd0a0"
     responses:
       "200":
-        description: Project details with available KPIs
+        description: Project details retrieved successfully
         content:
           application/json:
             schema:
               $ref: "../schemas/project-schemas.yaml#/ProjectDetailResponse"
+            example:
+              message: "Successfully fetched finance project"
+              project_id: "339cf69c-f60a-4c6c-8789-70e2664fd0a0"
+              project:
+                project_name: "First Project"
+                project_description: "OUR first project"
+                created_at: "2025-12-12T07:59:20.560051"
+                updated_at: "2025-12-12T07:59:20.560058"
       "400":
-        description: Invalid project_id format
+        description: Invalid project_id format (not a valid UUID)
         content:
           application/json:
             schema:
               $ref: "../schemas/common-schemas.yaml#/ErrorResponse"
-      "401":
-        description: Unauthorized - missing or invalid auth token
-        content:
-          application/json:
-            schema:
-              $ref: "../schemas/common-schemas.yaml#/ErrorResponse"
+            example:
+              error: "Invalid project_id format"
       "404":
-        description: Project not found
+        description: Project not found or user not authorized
         content:
           application/json:
             schema:
               $ref: "../schemas/common-schemas.yaml#/ErrorResponse"
+            example:
+              error: "Finance Project Not Found"
       "500":
         description: Internal server error
         content:
           application/json:
             schema:
               $ref: "../schemas/common-schemas.yaml#/ErrorResponse"
-
+            example:
+              error: "Internal Server Error"
   put:
-    tags:
-      - Projects
-    summary: Update Project
-    description: Update project metadata (name, description, etc.)
-    operationId: updateProject
-    parameters:
-      - name: project_id
-        in: path
-        required: true
-        description: Unique project identifier
-        schema:
-          type: string
-          format: uuid
-    requestBody:
-      required: true
-      content:
-        application/json:
+      tags:
+        - Projects
+      summary: Update Project by Project ID
+      description: Update project metadata (name and description)
+      operationId: updateProject
+      parameters:
+        - name: project_id
+          in: path
+          required: true
+          description: Unique project identifier (UUID format)
           schema:
-            $ref: "../schemas/project-schemas.yaml#/UpdateProjectRequest"
-    responses:
-      "200":
-        description: Project updated successfully
+            type: string
+            format: uuid
+          example: "339cf69c-f60a-4c6c-8789-70e2664fd0a0"
+      requestBody:
+        required: true
         content:
           application/json:
             schema:
-              $ref: "../schemas/project-schemas.yaml#/ProjectUpdateResponse"
-      "400":
-        description: Invalid request body or project_id format
-        content:
-          application/json:
-            schema:
-              $ref: "../schemas/common-schemas.yaml#/ErrorResponse"
-      "401":
-        description: Unauthorized - missing or invalid auth token
-        content:
-          application/json:
-            schema:
-              $ref: "../schemas/common-schemas.yaml#/ErrorResponse"
-      "404":
-        description: Project not found
-        content:
-          application/json:
-            schema:
-              $ref: "../schemas/common-schemas.yaml#/ErrorResponse"
-      "500":
-        description: Internal server error
-        content:
-          application/json:
-            schema:
-              $ref: "../schemas/common-schemas.yaml#/ErrorResponse"
-
+              $ref: "../schemas/project-schemas.yaml#/UpdateProjectRequest"
+            examples:
+              with_description:
+                summary: Update with description
+                value:
+                  project_name: "Updated Project Name"
+                  project_description: "Updated description (OPTIONAL)"
+              without_description:
+                summary: Update without description
+                value:
+                  project_name: "Updated Project Name"
+      responses:
+        "200":
+          description: Project updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: "../schemas/project-schemas.yaml#/ProjectUpdateResponse"
+              example:
+                message: "Successfully updated finance project"
+                project_id: "339cf69c-f60a-4c6c-8789-70e2664fd0a0"
+                project_name: "Updated Project Name"
+                project_description: "Updated description (OPTIONAL)"
+                created_at: "2025-12-12T07:59:20.560051"
+                updated_at: "2025-12-12T09:30:45.123456"
+        "400":
+          description: Bad request - validation errors or duplicate project name
+          content:
+            application/json:
+              schema:
+                $ref: "../schemas/common-schemas.yaml#/ErrorResponse"
+              examples:
+                invalid_project_id:
+                  summary: Invalid project_id format (not UUID)
+                  value:
+                    error: "Invalid project_id format"
+                missing_json:
+                  summary: Missing JSON body
+                  value:
+                    error: "Missing JSON body"
+                missing_project_name:
+                  summary: Missing project_name field
+                  value:
+                    error: "Missing project name"
+                invalid_project_name_type:
+                  summary: Invalid project_name type (not string)
+                  value:
+                    error: "Invalid project_name format"
+                project_name_too_short:
+                  summary: Project name less than 3 characters
+                  value:
+                    error: "Project name must be more than 3 characters"
+                project_name_too_long:
+                  summary: Project name exceeds 100 characters
+                  value:
+                    error: "Project name must be less than or equal to 100 characters"
+                invalid_description_type:
+                  summary: Invalid project_description type (not string)
+                  value:
+                    error: "Invalid project_description format"
+                duplicate_project_name:
+                  summary: Project name already exists for this user
+                  value:
+                    error: "Project Name Already Exists Please Choose Another Name"
+        "404":
+          description: Project not found
+          content:
+            application/json:
+              schema:
+                $ref: "../schemas/common-schemas.yaml#/ErrorResponse"
+              example:
+                error: "Finance Project Not Found"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "../schemas/common-schemas.yaml#/ErrorResponse"
+              example:
+                error: "Internal Server Error"
+                
   delete:
     tags:
       - Projects
-    summary: Delete Project
-    description: Permanently delete a project and all associated dashboards
+    summary: Delete Project by Project ID
+    description: Permanently delete a project and all associated data
     operationId: deleteProject
     parameters:
       - name: project_id
         in: path
         required: true
-        description: Unique project identifier
+        description: Unique project identifier (UUID format)
         schema:
           type: string
           format: uuid
+        example: "339cf69c-f60a-4c6c-8789-70e2664fd0a0"
     responses:
       "200":
         description: Project deleted successfully
@@ -200,27 +298,31 @@
           application/json:
             schema:
               $ref: "../schemas/project-schemas.yaml#/DeleteProjectResponse"
+            example:
+              message: "Successfully deleted finance project"
+              project_id: "339cf69c-f60a-4c6c-8789-70e2664fd0a0"
+              project_name: "First Project"
       "400":
-        description: Invalid project_id format
+        description: Invalid project_id format (not a valid UUID)
         content:
           application/json:
             schema:
               $ref: "../schemas/common-schemas.yaml#/ErrorResponse"
-      "401":
-        description: Unauthorized - missing or invalid auth token
-        content:
-          application/json:
-            schema:
-              $ref: "../schemas/common-schemas.yaml#/ErrorResponse"
+            example:
+              error: "Invalid project_id format"
       "404":
-        description: Project not found
+        description: Project not found or user not authorized
         content:
           application/json:
             schema:
               $ref: "../schemas/common-schemas.yaml#/ErrorResponse"
+            example:
+              error: "Finance Project Not Found"
       "500":
         description: Internal server error
         content:
           application/json:
             schema:
               $ref: "../schemas/common-schemas.yaml#/ErrorResponse"
+            example:
+              error: "Internal Server Error"

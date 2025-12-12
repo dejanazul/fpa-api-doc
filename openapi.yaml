@@ -22,13 +22,12 @@ tags:
 
 paths:
   # Project endpoints
-  /project:
-    $ref: "./paths/projects.yaml#/~1project"
-  /projects:
-    $ref: "./paths/projects.yaml#/~1projects"
-  /project/{project_id}:
-    $ref: "./paths/projects.yaml#/~1project~1{project_id}"
-
+  /fin/project:
+    $ref: "./paths/projects.yaml#/~1fin~1project"
+  /fin/projects:
+    $ref: "./paths/projects.yaml#/~1fin~1projects"
+  /fin/project/{project_id}:
+    $ref: "./paths/projects.yaml#/~1fin~1project~1{project_id}"
   # Dashboard endpoints
   /dashboards:
     $ref: "./paths/dashboards.yaml#/~1dashboards"
