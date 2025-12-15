@@ -15,8 +15,8 @@ servers:
 tags:
   - name: Projects
     description: Project management endpoints
-  - name: Dashboards
-    description: Dashboard management endpoints
+  # - name: Dashboards
+  #   description: Dashboard management endpoints
   - name: KPIs
     description: KPI calculation and retrieval endpoints
 
@@ -28,13 +28,14 @@ paths:
     $ref: "./paths/projects.yaml#/~1fin~1projects"
   /fin/project/{project_id}:
     $ref: "./paths/projects.yaml#/~1fin~1project~1{project_id}"
+  
   # Dashboard endpoints
-  /dashboards:
-    $ref: "./paths/dashboards.yaml#/~1dashboards"
-  /dashboards/{dashboard_id}:
-    $ref: "./paths/dashboards.yaml#/~1dashboards~1{dashboard_id}"
-  /projects/{project_id}/dashboards:
-    $ref: "./paths/dashboards.yaml#/~1projects~1{project_id}~1dashboards"
+  # /dashboards:
+  #   $ref: "./paths/dashboards.yaml#/~1dashboards"
+  # /dashboards/{dashboard_id}:
+  #   $ref: "./paths/dashboards.yaml#/~1dashboards~1{dashboard_id}"
+  # /projects/{project_id}/dashboards:
+  #   $ref: "./paths/dashboards.yaml#/~1projects~1{project_id}~1dashboards"
 
   # KPI endpoints
   /fin/kpi/{upload_id}:

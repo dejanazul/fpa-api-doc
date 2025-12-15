@@ -14,6 +14,31 @@ CreateProjectRequest:
       description: Description of the project (optional)
       example: OUR first project
       default: ""
+    project_icon:
+      type: string
+      description: Icon identifier for the project
+      enum:
+        - user
+        - dollar-sign
+        - chart
+        - activity
+        - file-spreadsheet
+        - trending-up
+        - folder
+      default: folder
+      example: chart
+    project_color:
+      type: string
+      description: Color identifier for the project
+      enum:
+        - teal
+        - green
+        - blue
+        - purple
+        - orange
+        - red
+      default: blue
+      example: teal
 
 UpdateProjectRequest:
   type: object
@@ -31,6 +56,29 @@ UpdateProjectRequest:
       description: Updated project description (optional)
       example: Updated description (OPTIONAL)
       default: ""
+    project_icon:
+      type: string
+      description: Icon identifier for the project
+      enum:
+        - user
+        - dollar-sign
+        - chart
+        - activity
+        - file-spreadsheet
+        - trending-up
+        - folder
+      example: chart
+    project_color:
+      type: string
+      description: Color identifier for the project
+      enum:
+        - teal
+        - green
+        - blue
+        - purple
+        - orange
+        - red
+      example: teal
 
 ProjectResponse:
   type: object
@@ -58,6 +106,31 @@ ProjectResponse:
       type: string
       description: Description of the project (echoed from request if provided)
       example: OUR first project
+    project_icon:
+      type: string
+      description: Icon identifier for the project
+      enum:
+        - user
+        - dollar-sign
+        - chart
+        - activity
+        - file-spreadsheet
+        - trending-up
+        - folder
+      default: folder
+      example: chart
+    project_color:
+      type: string
+      description: Color identifier for the project
+      enum:
+        - teal
+        - green
+        - blue
+        - purple
+        - orange
+        - red
+      default: blue
+      example: teal
     created_at:
       type: string
       format: date-time
@@ -90,6 +163,31 @@ ProjectListResponse:
       description: Array of project objects
       items:
         $ref: "#/ProjectListItem"
+    project_icon:
+      type: string
+      description: Icon identifier for the project
+      enum:
+        - user
+        - dollar-sign
+        - chart
+        - activity
+        - file-spreadsheet
+        - trending-up
+        - folder
+      default: folder
+      example: chart
+    project_color:
+      type: string
+      description: Color identifier for the project
+      enum:
+        - teal
+        - green
+        - blue
+        - purple
+        - orange
+        - red
+      default: blue
+      example: teal
 
 ProjectListItem:
   type: object
@@ -112,6 +210,31 @@ ProjectListItem:
       type: string
       description: Description of the project (may be empty if not provided)
       example: "OUR first project"
+    project_icon:
+      type: string
+      description: Icon identifier for the project
+      enum:
+        - user
+        - dollar-sign
+        - chart
+        - activity
+        - file-spreadsheet
+        - trending-up
+        - folder
+      default: folder
+      example: chart
+    project_color:
+      type: string
+      description: Color identifier for the project
+      enum:
+        - teal
+        - green
+        - blue
+        - purple
+        - orange
+        - red
+      default: blue
+      example: teal
     created_at:
       type: string
       format: date-time
@@ -155,6 +278,31 @@ ProjectDetailResponse:
           type: string
           description: Description of the project (may be empty if not provided)
           example: "OUR first project"
+        project_icon:
+          type: string
+          description: Icon identifier for the project
+          enum:
+            - user
+            - dollar-sign
+            - chart
+            - activity
+            - file-spreadsheet
+            - trending-up
+            - folder
+          default: folder
+          example: chart
+        project_color:
+          type: string
+          description: Color identifier for the project
+          enum:
+            - teal
+            - green
+            - blue
+            - purple
+            - orange
+            - red
+          default: blue
+          example: teal
         created_at:
           type: string
           format: date-time
@@ -193,6 +341,31 @@ ProjectUpdateResponse:
       type: string
       description: Updated project description (may be empty if not provided)
       example: Updated description (OPTIONAL)
+    project_icon:
+      type: string
+      description: Icon identifier for the project
+      enum:
+        - user
+        - dollar-sign
+        - chart
+        - activity
+        - file-spreadsheet
+        - trending-up
+        - folder
+      default: folder
+      example: chart
+    project_color:
+      type: string
+      description: Color identifier for the project
+      enum:
+        - teal
+        - green
+        - blue
+        - purple
+        - orange
+        - red
+      default: blue
+      example: teal
     created_at:
       type: string
       format: date-time

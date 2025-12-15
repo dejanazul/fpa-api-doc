@@ -17,6 +17,8 @@
               value:
                 project_name: "First Project"
                 project_description: "OUR first project (OPTIONAL)"
+                icon: "user (OPTIONAL)"
+                color: "teal (OPTIONAL)"
             minimal:
               summary: Minimal request (without description)
               value:
@@ -33,6 +35,8 @@
               project_id: "339cf69c-f60a-4c6c-8789-70e2664fd0a0"
               project_name: "First Project"
               project_description: "OUR first project"
+              project_icon: "user"
+              project_color: "teal"
               created_at: "2025-12-12T07:59:20.560051"
               updated_at: "2025-12-12T07:59:20.560058"
       "400":
@@ -104,11 +108,15 @@
                 - project_id: "339cf69c-f60a-4c6c-8789-70e2664fd0a0"
                   project_name: "First Project"
                   project_description: "OUR first project"
+                  project_icon: "user"
+                  project_color: "teal"
                   created_at: "2025-12-12T07:59:20.560051"
                   updated_at: "2025-12-12T07:59:20.560058"
                 - project_id: "440dg70d-g71b-5d7d-b890-81f3775ge1b1"
                   project_name: "Second Project"
                   project_description: "Another project"
+                  project_icon: "folder"
+                  project_color: "blue"
                   created_at: "2025-12-12T08:30:15.123456"
                   updated_at: "2025-12-12T08:30:15.123456"
       "500":
@@ -149,6 +157,8 @@
               project:
                 project_name: "First Project"
                 project_description: "OUR first project"
+                project_icon: "user"
+                project_color: "teal"
                 created_at: "2025-12-12T07:59:20.560051"
                 updated_at: "2025-12-12T07:59:20.560058"
       "400":
@@ -202,6 +212,8 @@
                 value:
                   project_name: "Updated Project Name"
                   project_description: "Updated description (OPTIONAL)"
+                  icon: "user (OPTIONAL)"
+                  color: "teal (OPTIONAL)"
               without_description:
                 summary: Update without description
                 value:
@@ -213,13 +225,25 @@
             application/json:
               schema:
                 $ref: "../schemas/project-schemas.yaml#/ProjectUpdateResponse"
-              example:
-                message: "Successfully updated finance project"
-                project_id: "339cf69c-f60a-4c6c-8789-70e2664fd0a0"
-                project_name: "Updated Project Name"
-                project_description: "Updated description (OPTIONAL)"
-                created_at: "2025-12-12T07:59:20.560051"
-                updated_at: "2025-12-12T09:30:45.123456"
+              examples:
+                with_changes:
+                  summary: Update with field changes
+                  value:
+                    message: "Successfully updated finance project"
+                    project_id: "339cf69c-f60a-4c6c-8789-70e2664fd0a0"
+                    updated_fields:
+                      project_name: "Updated Project Name"
+                      project_description: "Updated description"
+                      project_icon: "chart"
+                      project_color: "teal"
+                    updated_at: "2025-12-15T03:53:52.632245"
+                no_changes:
+                  summary: Update with no field changes
+                  value:
+                    message: "Successfully updated finance project"
+                    project_id: "339cf69c-f60a-4c6c-8789-70e2664fd0a0"
+                    updated_fields: {}
+                    updated_at: "2025-12-15T03:53:52.632245"
         "400":
           description: Bad request - validation errors or duplicate project name
           content:
