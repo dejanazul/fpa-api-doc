@@ -250,6 +250,73 @@ HistoricalKPI:
       description: Timestamp of last update to this record
       example: "2025-12-11T16:54:47.810130"
   
+ComparisonKPI:
+  type: object
+  required:
+    - kpi_name
+    - kpi_category
+    - latest_period
+    - latest_value
+    - previous_period
+    - previous_value
+    - absolute_change
+    - percentage_change
+    - trend
+  properties:
+    kpi_name:
+      type: string
+      description: Human-readable name of the KPI
+      example: Net Profit Margin
+      minLength: 1
+      maxLength: 255
+    kpi_category:
+      type: string
+      description: Category classification of the KPI
+      enum:
+        - Dependency Metric
+        - Profitability
+        - Liquidity
+        - Solvency
+        - Growth Metrics
+        - Efficiency Metrics
+      example: Profitability
+    latest_period:
+      type: string
+      description: Label of the most recent period
+      example: "2020"
+      minLength: 1
+      maxLength: 50
+    latest_value:
+      type: number
+      description: KPI value for the latest period
+      example: 0.1245
+    previous_period:
+      type: string
+      description: Label of the previous period for comparison
+      example: "2019"
+      minLength: 1
+      maxLength: 50
+    previous_value:
+      type: number
+      description: KPI value for the previous period
+      example: 0.0948
+    absolute_change:
+      type: number
+      description: Absolute difference between latest and previous values
+      example: 0.0297
+    percentage_change:
+      type: number
+      description: Percentage change between periods
+      example: 31.33
+    trend:
+      type: string
+      description: Direction of change between periods
+      enum:
+        - increase
+        - decrease
+        - stable
+      example: increase
+
 ColumnRelation:
   type: object
   description: Column relations grouped by file ID
@@ -381,6 +448,7 @@ KPIRetrievalResponse:
     - total_kpis
     - calculated_kpis
     - historical_kpis
+    - latest_vs_previous_comparison
     - columns_relation
   properties:
     message:
@@ -407,6 +475,11 @@ KPIRetrievalResponse:
       description: Array of historical KPI values for trend analysis
       items:
         $ref: "#/HistoricalKPI"
+    latest_vs_previous_comparison:
+      type: array
+      description: Comparison of latest KPI values against previous period
+      items:
+        $ref: "#/ComparisonKPI"
     columns_relation:
       type: array
       description: Array of Income Statement columns relation 
