@@ -250,6 +250,82 @@ HistoricalKPI:
       description: Timestamp of last update to this record
       example: "2025-12-11T16:54:47.810130"
   
+ColumnRelation:
+  type: object
+  description: Column relations grouped by file ID
+  additionalProperties:
+    type: object
+    required:
+      - file_name
+      - file_type
+      - sheets
+    properties:
+      file_name:
+        type: string
+        description: Name of the uploaded file
+        example: income-statement-(1)-with-1-sheet.xlsx
+        minLength: 1
+      file_type:
+        type: string
+        description: Type of the financial statement file
+        enum:
+          - income_statement
+          - balance_sheet
+          - cash_flow
+          - unknown
+        example: unknown
+      sheets:
+        type: object
+        description: Sheet-level data containing column relations
+        additionalProperties:
+          type: object
+          required:
+            - columns_relation_detected
+            - periods
+            - columns_relation
+          properties:
+            columns_relation_detected:
+              type: boolean
+              description: Whether column relations were detected in this sheet
+              example: true
+            periods:
+              type: array
+              description: List of time periods found in the data
+              items:
+                type: string
+              example:
+                - "2020"
+                - "2019"
+              minItems: 1
+            columns_relation:
+              type: array
+              description: Array of parent-child relationships between line items
+              items:
+                $ref: "#/ColumnRelation"
+              minItems: 0
+  example:
+    "24dcbc7b-af30-49ab-84f6-4cdcbf9f2460":
+      file_name: income-statement-(1)-with-1-sheet.xlsx
+      file_type: unknown
+      sheets:
+        SingleStep:
+          columns_relation_detected: true
+          periods:
+            - "2020"
+            - "2019"
+          columns_relation:
+            - parent: Total Revenue
+              children:
+                - Sales revenue
+                - Service revenue
+              children_value:
+                - "2020": 110000.0
+                  "2019": 95000.0
+                - "2020": 70000.0
+                  "2019": 62000.0
+
+
+
 KPICalculationResponse:
   type: object
   required:
@@ -305,6 +381,7 @@ KPIRetrievalResponse:
     - total_kpis
     - calculated_kpis
     - historical_kpis
+    - columns_relation
   properties:
     message:
       type: string
@@ -330,4 +407,10 @@ KPIRetrievalResponse:
       description: Array of historical KPI values for trend analysis
       items:
         $ref: "#/HistoricalKPI"
+    columns_relation:
+      type: array
+      description: Array of Income Statement columns relation 
+      items:
+        $ref: "#/ColumnRelation"
+
 

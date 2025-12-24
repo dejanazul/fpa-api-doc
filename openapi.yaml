@@ -62,26 +62,26 @@ components:
       $ref: "./schemas/project-schemas.yaml#/DeleteProjectResponse"
 
     # Dashboard schemas
-    CreateDashboardRequest:
-      $ref: "./schemas/dashboard-schemas.yaml#/CreateDashboardRequest"
-    UpdateDashboardRequest:
-      $ref: "./schemas/dashboard-schemas.yaml#/UpdateDashboardRequest"
-    DashboardKPIUpdate:
-      $ref: "./schemas/dashboard-schemas.yaml#/DashboardKPIUpdate"
-    DashboardResponse:
-      $ref: "./schemas/dashboard-schemas.yaml#/DashboardResponse"
-    DashboardListResponse:
-      $ref: "./schemas/dashboard-schemas.yaml#/DashboardListResponse"
-    DashboardListItem:
-      $ref: "./schemas/dashboard-schemas.yaml#/DashboardListItem"
-    DashboardDetailResponse:
-      $ref: "./schemas/dashboard-schemas.yaml#/DashboardDetailResponse"
-    DashboardKPIDetail:
-      $ref: "./schemas/dashboard-schemas.yaml#/DashboardKPIDetail"
-    DashboardUpdateResponse:
-      $ref: "./schemas/dashboard-schemas.yaml#/DashboardUpdateResponse"
-    DeleteDashboardResponse:
-      $ref: "./schemas/dashboard-schemas.yaml#/DeleteDashboardResponse"
+    # CreateDashboardRequest:
+    #   $ref: "./schemas/dashboard-schemas.yaml#/CreateDashboardRequest"
+    # UpdateDashboardRequest:
+    #   $ref: "./schemas/dashboard-schemas.yaml#/UpdateDashboardRequest"
+    # DashboardKPIUpdate:
+    #   $ref: "./schemas/dashboard-schemas.yaml#/DashboardKPIUpdate"
+    # DashboardResponse:
+    #   $ref: "./schemas/dashboard-schemas.yaml#/DashboardResponse"
+    # DashboardListResponse:
+    #   $ref: "./schemas/dashboard-schemas.yaml#/DashboardListResponse"
+    # DashboardListItem:
+    #   $ref: "./schemas/dashboard-schemas.yaml#/DashboardListItem"
+    # DashboardDetailResponse:
+    #   $ref: "./schemas/dashboard-schemas.yaml#/DashboardDetailResponse"
+    # DashboardKPIDetail:
+    #   $ref: "./schemas/dashboard-schemas.yaml#/DashboardKPIDetail"
+    # DashboardUpdateResponse:
+    #   $ref: "./schemas/dashboard-schemas.yaml#/DashboardUpdateResponse"
+    # DeleteDashboardResponse:
+    #   $ref: "./schemas/dashboard-schemas.yaml#/DeleteDashboardResponse"
 
     # KPI schemas
     CalculateKPIRequest:
