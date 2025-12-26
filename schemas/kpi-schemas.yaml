@@ -262,6 +262,7 @@ ComparisonKPI:
     - absolute_change
     - percentage_change
     - trend
+    - variance_analysis
   properties:
     kpi_name:
       type: string
@@ -316,6 +317,65 @@ ComparisonKPI:
         - decrease
         - stable
       example: increase
+    variance_analysis:
+      type: object
+      description: Statistical variance analysis between periods
+      required:
+        - population_variance
+        - sample_variance
+      properties:
+        population_variance:
+          type: object
+          description: Population variance statistics
+          required:
+            - value
+            - mean
+            - std_dev
+            - data_points
+          properties:
+            value:
+              type: number
+              description: Population variance value
+              example: 0.00022009
+            mean:
+              type: number
+              description: Mean of the data points
+              example: 0.10965
+            std_dev:
+              type: number
+              description: Standard deviation
+              example: 0.01484
+            data_points:
+              type: integer
+              description: Number of data points used in calculation
+              example: 2
+              minimum: 2
+        sample_variance:
+          type: object
+          description: Sample variance statistics
+          required:
+            - value
+            - mean
+            - std_dev
+            - data_points
+          properties:
+            value:
+              type: number
+              description: Sample variance value
+              example: 0.00044018
+            mean:
+              type: number
+              description: Mean of the data points
+              example: 0.10965
+            std_dev:
+              type: number
+              description: Standard deviation
+              example: 0.02098
+            data_points:
+              type: integer
+              description: Number of data points used in calculation
+              example: 2
+              minimum: 2
 
 ColumnRelation:
   type: object
